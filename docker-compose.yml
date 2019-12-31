@@ -1,0 +1,32 @@
+version: '3'
+
+volumes:
+  data:
+    driver: local
+
+services:
+
+  database:
+    image: postgres:9.4
+    volumes:
+      - data:/var/lib/postgresql
+      - ./postgresql.conf:/usr/share/postgresql/9.4/postgresql.conf
+      - ./pg_hba.conf:/usr/share/postgresql/9.4/pg_hba.conf
+    ports:
+      - "5433:5432"
+    environment:
+      - PGPASSWORD=postgres
+      - PGUSER=postgres
+
+
+  app:
+    image: ambientum/php:7.1-nginx
+    volumes:
+      - ./app:/var/www/app
+    ports:
+      - "80:8080"
+    environment:
+      - XDEBUG_CONFIG="remote_host=localhost remote_port=9000"
+      - XDEBUG_ENABLED=true
+    links:
+      - database
