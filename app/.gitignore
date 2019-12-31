@@ -20,6 +20,8 @@ composer.phar
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/app.iml
+.idea/php.xml
 
 # Generated files
 .idea/**/contentModel.xml

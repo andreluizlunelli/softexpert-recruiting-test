@@ -1,8 +1,6 @@
 <?php
 
-require 'vendor/autoload.php';
-require '../src/routes.php';
-require '../src/Bootstrap.php';
+require '../vendor/autoload.php';
 
-\RecruitingApp\Bootstrap::run();
-
+$bootstrap = new \RecruitingApp\Bootstrap();
+$bootstrap->run();

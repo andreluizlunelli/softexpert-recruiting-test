@@ -5,8 +5,8 @@ require './vendor/autoload.php';
 use RecruitingApp\Bootstrap;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
-Bootstrap::loadEnv();
+$bootstrap = new Bootstrap();
 
-$entityManager = Bootstrap::getEntityManager();
+$entityManager = $bootstrap->getContainer('em');
 
 return ConsoleRunner::createHelperSet($entityManager);
