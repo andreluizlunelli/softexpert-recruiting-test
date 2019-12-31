@@ -1,7 +1,7 @@
 version: '3'
 
 volumes:
-  data:
+  app-data:
     driver: local
 
 services:
@@ -9,7 +9,7 @@ services:
   database:
     image: postgres:9.4
     volumes:
-      - data:/var/lib/postgresql
+      - app-data:/var/lib/postgresql
       - ./postgresql.conf:/usr/share/postgresql/9.4/postgresql.conf
       - ./pg_hba.conf:/usr/share/postgresql/9.4/pg_hba.conf
     ports:
