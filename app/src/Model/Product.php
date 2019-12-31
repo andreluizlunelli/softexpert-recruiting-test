@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  * @ORM\Table(name="products")
+ * @ORM\HasLifecycleCallbacks
  */
 class Product
 {
@@ -35,6 +36,11 @@ class Product
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * @return string
@@ -84,4 +90,11 @@ class Product
         $this->productType = $productType;
     }
 
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt= new \DateTime();
+    }
 }

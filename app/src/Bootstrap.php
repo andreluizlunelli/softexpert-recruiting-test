@@ -10,6 +10,7 @@ use League\Route\RouteCollection;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RecruitingApp\Api\Controller\ProductController;
+use RecruitingApp\Service\CreateProductService;
 use Symfony\Component\Dotenv\Dotenv;
 use League\Container\Container;
 use Zend\Diactoros\Response;
@@ -47,6 +48,7 @@ class Bootstrap
         $this->env = $env;
 
         $this->configEntityManager();
+        $this->dependencyInjection();
     }
 
     public function run()
@@ -104,6 +106,12 @@ class Bootstrap
         });
 
         $route->post('/api/product', ProductController::class.'::post');
+    }
+
+    private function dependencyInjection()
+    {
+        $this->container->add(CreateProductService::class, new CreateProductService($this->getContainer('em')));
+        $this->container->add(ProductController::class, new ProductController($this->getContainer(CreateProductService::class)));
     }
 
     /**

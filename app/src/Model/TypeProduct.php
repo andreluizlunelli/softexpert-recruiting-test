@@ -8,12 +8,15 @@ use Doctrine\ORM\Mapping as ORM;
  * Class TypeProduct
  * @package RecruitingApp\Model
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="RecruitingApp\Repository\TypeProductRepository")
  * @ORM\Table(name="type_products")
+ * @ORM\HasLifecycleCallbacks
  */
 class TypeProduct
 {
     use DefaultModelTrait;
+
+    const TAX_FREE = 'livre de impostos';
 
     /**
      * @var array $products
@@ -35,6 +38,11 @@ class TypeProduct
      * @ORM\Column(type="float", name="tax_percentage")
      */
     private $taxPercentage = 0.0;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * @return array
@@ -82,5 +90,13 @@ class TypeProduct
     public function setTaxPercentage($taxPercentage)
     {
         $this->taxPercentage = $taxPercentage;
+    }
+
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt= new \DateTime();
     }
 }
