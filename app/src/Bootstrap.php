@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RecruitingApp\Api\Controller\ProductController;
 use RecruitingApp\Service\CreateProductService;
+use RecruitingApp\Service\DeleteProductService;
 use Symfony\Component\Dotenv\Dotenv;
 use League\Container\Container;
 use Zend\Diactoros\Response;
@@ -99,19 +100,18 @@ class Bootstrap
 
     private function routes(RouteCollection $route)
     {
-        $route->map('GET', '/', function (ServerRequestInterface $request, ResponseInterface $response) {
-            $response->getBody()->write('<h1>Hello, World!</h1>');
-
-            return $response;
-        });
-
         $route->post('/api/product', ProductController::class.'::post');
+        $route->delete('/api/product/{id}', ProductController::class.'::delete');
     }
 
     private function dependencyInjection()
     {
         $this->container->add(CreateProductService::class, new CreateProductService($this->getContainer('em')));
-        $this->container->add(ProductController::class, new ProductController($this->getContainer(CreateProductService::class)));
+        $this->container->add(DeleteProductService::class, new DeleteProductService($this->getContainer('em')));
+        $this->container->add(ProductController::class, new ProductController(
+            $this->getContainer(CreateProductService::class),
+            $this->getContainer(DeleteProductService::class)
+        ));
     }
 
     /**
@@ -125,5 +125,4 @@ class Bootstrap
 
         return $this->container->get($alias);
     }
-
 }

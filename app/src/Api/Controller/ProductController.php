@@ -5,28 +5,36 @@ namespace RecruitingApp\Api\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RecruitingApp\Service\CreateProductService;
+use RecruitingApp\Service\DeleteProductService;
 
 class ProductController
 {
     /**
-     * @var CreateProductService $createProductService
+     * @var CreateProductService $createService
      */
-    private $createProductService;
+    private $createService;
+
+    /**
+     * @var DeleteProductService
+     */
+    private $deleteService;
 
     /**
      * ProductController constructor.
-     * @param CreateProductService $createProductService
+     * @param CreateProductService $createService
+     * @param DeleteProductService $deleteService
      */
-    public function __construct(CreateProductService $createProductService)
+    public function __construct(CreateProductService $createService, DeleteProductService $deleteService)
     {
-        $this->createProductService = $createProductService;
+        $this->createService = $createService;
+        $this->deleteService = $deleteService;
     }
 
     public function post(ServerRequestInterface $request, ResponseInterface $response)
     {
         try {
 
-            $product = $this->createProductService->create($request->getParsedBody());
+            $product = $this->createService->create($request->getParsedBody());
 
             $response = $response->withStatus(201);
             $response = $response->withHeader('location', "/api/product/{$product->getId()}");
@@ -39,5 +47,14 @@ class ProductController
 
             return $response;
         }
+    }
+
+    public function delete(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $id = $args['id'];
+
+        $this->deleteService->delete($id);
+
+        return $response->withStatus(204);
     }
 }
