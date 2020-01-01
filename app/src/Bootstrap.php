@@ -13,6 +13,7 @@ use RecruitingApp\Api\Controller\TypeProductController;
 use RecruitingApp\Service\CreateProductService;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteProductService;
+use RecruitingApp\Service\DeleteTypeProductService;
 use Symfony\Component\Dotenv\Dotenv;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
@@ -103,6 +104,7 @@ class Bootstrap
         $route->post('/api/product', ProductController::class.'::post');
         $route->delete('/api/product/{id}', ProductController::class.'::delete');
         $route->post('/api/type-product', TypeProductController::class.'::post');
+        $route->delete('/api/type-product/{id}', TypeProductController::class.'::delete');
     }
 
     private function dependencyInjection()
@@ -114,8 +116,10 @@ class Bootstrap
             $this->getContainer(DeleteProductService::class)
         ));
         $this->container->add(CreateTypeProductService::class, new CreateTypeProductService($this->getContainer('em')));
+        $this->container->add(DeleteTypeProductService::class, new DeleteTypeProductService($this->getContainer('em')));
         $this->container->add(TypeProductController::class, new TypeProductController(
-            $this->getContainer(CreateTypeProductService::class)
+            $this->getContainer(CreateTypeProductService::class),
+            $this->getContainer(DeleteTypeProductService::class)
         ));
     }
 

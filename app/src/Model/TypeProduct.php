@@ -2,6 +2,7 @@
 
 namespace RecruitingApp\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,7 +20,7 @@ class TypeProduct
     const TAX_FREE = 'livre de impostos';
 
     /**
-     * @var array $products
+     * @var ArrayCollection $products
      *
      * @ORM\OneToMany(targetEntity="Product", mappedBy="productType")
      */
@@ -42,10 +43,11 @@ class TypeProduct
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->products = new ArrayCollection();
     }
 
     /**
-     * @return array
+     * @return ArrayCollection
      */
     public function getProducts()
     {
@@ -53,7 +55,7 @@ class TypeProduct
     }
 
     /**
-     * @param array $products
+     * @param ArrayCollection $products
      */
     public function setProducts($products)
     {
