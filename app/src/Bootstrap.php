@@ -6,14 +6,14 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\Setup;
+use League\Container\Container;
 use League\Route\RouteCollection;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use RecruitingApp\Api\Controller\ProductController;
+use RecruitingApp\Api\Controller\TypeProductController;
 use RecruitingApp\Service\CreateProductService;
+use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteProductService;
 use Symfony\Component\Dotenv\Dotenv;
-use League\Container\Container;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
 
@@ -102,6 +102,7 @@ class Bootstrap
     {
         $route->post('/api/product', ProductController::class.'::post');
         $route->delete('/api/product/{id}', ProductController::class.'::delete');
+        $route->post('/api/type-product', TypeProductController::class.'::post');
     }
 
     private function dependencyInjection()
@@ -111,6 +112,10 @@ class Bootstrap
         $this->container->add(ProductController::class, new ProductController(
             $this->getContainer(CreateProductService::class),
             $this->getContainer(DeleteProductService::class)
+        ));
+        $this->container->add(CreateTypeProductService::class, new CreateTypeProductService($this->getContainer('em')));
+        $this->container->add(TypeProductController::class, new TypeProductController(
+            $this->getContainer(CreateTypeProductService::class)
         ));
     }
 
