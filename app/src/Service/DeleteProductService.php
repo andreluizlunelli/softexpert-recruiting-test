@@ -2,25 +2,15 @@
 
 namespace RecruitingApp\Service;
 
-use Doctrine\ORM\EntityManager;
 use RecruitingApp\Model\Product;
 
 class DeleteProductService
 {
-    /**
-     * @var EntityManager $entityManager
-     */
-    private $entityManager;
+    use EntityManagerOnService;
 
     /**
-     * ProductController constructor.
-     * @param EntityManager $entityManager
+     * @param int $id
      */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
     public function delete($id)
     {
         $repository = $this->entityManager->getRepository(Product::class);

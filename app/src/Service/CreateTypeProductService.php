@@ -2,26 +2,12 @@
 
 namespace RecruitingApp\Service;
 
-use Doctrine\ORM\EntityManager;
 use RecruitingApp\Api\Exception\ApiException;
-use RecruitingApp\Model\Product;
 use RecruitingApp\Model\TypeProduct;
 
 class CreateTypeProductService
 {
-    /**
-     * @var EntityManager $entityManager
-     */
-    private $entityManager;
-
-    /**
-     * ProductController constructor.
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
+    use EntityManagerOnService;
 
     /**
      * @param array $params

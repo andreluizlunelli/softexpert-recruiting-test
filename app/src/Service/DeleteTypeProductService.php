@@ -9,6 +9,9 @@ class DeleteTypeProductService
 {
     use EntityManagerOnService;
 
+    /**
+     * @param int $id
+     */
     public function delete($id)
     {
         $repository = $this->entityManager->getRepository(TypeProduct::class);
