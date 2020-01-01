@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Product
  * @package RecruitingApp\Model
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="RecruitingApp\Repository\ProductRepository")
  * @ORM\Table(name="products")
  * @ORM\HasLifecycleCallbacks
  */

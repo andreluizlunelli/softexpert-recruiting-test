@@ -5,6 +5,8 @@ namespace RecruitingApp\Api\Controller;
 use Doctrine\ORM\EntityRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use RecruitingApp\Api\Exception\ApiException;
+use RecruitingApp\Repository\ProductRepository;
 use RecruitingApp\Service\CreateProductService;
 use RecruitingApp\Service\DeleteProductService;
 
@@ -21,7 +23,7 @@ class ProductController
     private $deleteService;
 
     /**
-     * @var EntityRepository
+     * @var ProductRepository
      */
     private $repository;
 
@@ -29,12 +31,12 @@ class ProductController
      * ProductController constructor.
      * @param CreateProductService $createService
      * @param DeleteProductService $deleteService
-     * @param EntityRepository $entityRepository
+     * @param ProductRepository $entityRepository
      */
     public function __construct(
         CreateProductService $createService,
         DeleteProductService $deleteService,
-        EntityRepository $entityRepository
+        ProductRepository $entityRepository
     ) {
         $this->createService = $createService;
         $this->deleteService = $deleteService;
@@ -71,18 +73,33 @@ class ProductController
 
     public function get(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        if (array_key_exists('id', $args)) {
-            $product = $this->repository->find($args['id']);
+        try {
+            if (array_key_exists('idOrName', $args)) {
+
+                $idOrName = $args['idOrName'];
+
+                $product = is_numeric($idOrName)
+                    ? $this->repository->find($idOrName)
+                    : $this->repository->findByNameLike($idOrName);
+
+            } else {
+                $product = $this->repository->findAll();
+            }
+
+            if (empty($product)) {
+                throw new ApiException('Produto não encontrado.');
+            }
 
             $content = json_encode($product);
-        } else {
-            $products = $this->repository->findAll();
+            $response->getBody()->write($content);
 
-            $content = json_encode($products);
+            return $response;
+
+        } catch (ApiException $exception) {
+            $response = $response->withStatus(500);
+            $response->getBody()->write($exception->getMessage());
+
+            return $response;
         }
-
-        $response->getBody()->write($content);
-
-        return $response;
     }
 }

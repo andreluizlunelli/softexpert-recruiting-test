@@ -107,7 +107,7 @@ class Bootstrap
     private function routes(RouteCollection $route)
     {
         $route->group('/api', function ($route) {
-            $route->get('/product[/{id}]', ProductController::class.'::get');
+            $route->get('/product[/{idOrName}]', ProductController::class.'::get');
             $route->post('/product', ProductController::class.'::post');
             $route->delete('/product/{id}', ProductController::class.'::delete');
             $route->get('/type-product[/{id}]', TypeProductController::class.'::get');
