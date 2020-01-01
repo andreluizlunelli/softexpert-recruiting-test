@@ -13,6 +13,7 @@ use RecruitingApp\Api\Controller\ProductController;
 use RecruitingApp\Api\Controller\TypeProductController;
 use RecruitingApp\Model\Product;
 use RecruitingApp\Model\TypeProduct;
+use RecruitingApp\Service\AddProductOnTypeService;
 use RecruitingApp\Service\CreateProductService;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteProductService;
@@ -113,6 +114,7 @@ class Bootstrap
             $route->post('/type-product', TypeProductController::class.'::post');
             $route->delete('/type-product/{id}', TypeProductController::class.'::delete');
             $route->put('/type-product/{id}', TypeProductController::class.'::put');
+            $route->get('/type-product/{id-type}/add-product/{id-product}', TypeProductController::class.'::addProduct');
         })->setStrategy(new JsonStrategy());
     }
 
@@ -130,10 +132,12 @@ class Bootstrap
         $this->container->add(CreateTypeProductService::class, new CreateTypeProductService($entityManager));
         $this->container->add(DeleteTypeProductService::class, new DeleteTypeProductService($entityManager));
         $this->container->add(UpdateTypeProductService::class, new UpdateTypeProductService($entityManager));
+        $this->container->add(AddProductOnTypeService::class, new AddProductOnTypeService($entityManager));
         $this->container->add(TypeProductController::class, new TypeProductController(
             $this->getContainer(CreateTypeProductService::class),
             $this->getContainer(DeleteTypeProductService::class),
             $this->getContainer(UpdateTypeProductService::class),
+            $this->getContainer(AddProductOnTypeService::class),
             $entityManager->getRepository(TypeProduct::class)
         ));
     }

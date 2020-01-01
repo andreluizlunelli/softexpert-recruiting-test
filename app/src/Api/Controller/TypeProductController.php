@@ -7,6 +7,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RecruitingApp\Api\Exception\ApiException;
 use RecruitingApp\Repository\TypeProductRepository;
+use RecruitingApp\Service\AddProductOnTypeService;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteTypeProductService;
 use RecruitingApp\Service\UpdateTypeProductService;
@@ -29,6 +30,11 @@ class TypeProductController
     private $updateService;
 
     /**
+     * @var AddProductOnTypeService
+     */
+    private $addProductService;
+
+    /**
      * @var EntityRepository
      */
     private $repository;
@@ -38,18 +44,21 @@ class TypeProductController
      * @param CreateTypeProductService $createService
      * @param DeleteTypeProductService $deleteService
      * @param UpdateTypeProductService $updateService
+     * @param AddProductOnTypeService $addProductService
      * @param TypeProductRepository $entityRepository
      */
     public function __construct(
         CreateTypeProductService $createService,
         DeleteTypeProductService $deleteService,
         UpdateTypeProductService $updateService,
+        AddProductOnTypeService $addProductService,
         TypeProductRepository $entityRepository
     ) {
         $this->createService = $createService;
         $this->deleteService = $deleteService;
         $this->updateService = $updateService;
         $this->repository = $entityRepository;
+        $this->addProductService = $addProductService;
     }
 
     public function post(ServerRequestInterface $request, ResponseInterface $response)
@@ -123,6 +132,25 @@ class TypeProductController
             $parsedBody = json_decode($request->getBody()->getContents(), true);
 
             $this->updateService->update($args['id'], $parsedBody);
+
+            return $response->withStatus(204);
+
+        } catch (ApiException $exception) {
+            $response = $response->withStatus(404);
+            $response->getBody()->write($exception->getMessage());
+
+            return $response;
+        }
+    }
+
+    public function addProduct(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        try {
+
+            $idType = $args['id-type'];
+            $idProduct = $args['id-product'];
+
+            $this->addProductService->add($idType, $idProduct);
 
             return $response->withStatus(204);
 

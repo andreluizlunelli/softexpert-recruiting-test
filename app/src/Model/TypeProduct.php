@@ -56,14 +56,6 @@ class TypeProduct implements \JsonSerializable
     }
 
     /**
-     * @param ArrayCollection $products
-     */
-    public function setProducts($products)
-    {
-        $this->products = $products;
-    }
-
-    /**
      * @return string
      */
     public function getName()
