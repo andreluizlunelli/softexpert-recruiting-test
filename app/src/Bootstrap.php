@@ -17,6 +17,7 @@ use RecruitingApp\Service\CreateProductService;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteProductService;
 use RecruitingApp\Service\DeleteTypeProductService;
+use RecruitingApp\Service\UpdateTypeProductService;
 use Symfony\Component\Dotenv\Dotenv;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequestFactory;
@@ -111,6 +112,7 @@ class Bootstrap
             $route->get('/type-product[/{id}]', TypeProductController::class.'::get');
             $route->post('/type-product', TypeProductController::class.'::post');
             $route->delete('/type-product/{id}', TypeProductController::class.'::delete');
+            $route->put('/type-product/{id}', TypeProductController::class.'::put');
         })->setStrategy(new JsonStrategy());
     }
 
@@ -127,9 +129,11 @@ class Bootstrap
         ));
         $this->container->add(CreateTypeProductService::class, new CreateTypeProductService($entityManager));
         $this->container->add(DeleteTypeProductService::class, new DeleteTypeProductService($entityManager));
+        $this->container->add(UpdateTypeProductService::class, new UpdateTypeProductService($entityManager));
         $this->container->add(TypeProductController::class, new TypeProductController(
             $this->getContainer(CreateTypeProductService::class),
             $this->getContainer(DeleteTypeProductService::class),
+            $this->getContainer(UpdateTypeProductService::class),
             $entityManager->getRepository(TypeProduct::class)
         ));
     }

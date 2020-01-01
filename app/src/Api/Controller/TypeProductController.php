@@ -5,14 +5,16 @@ namespace RecruitingApp\Api\Controller;
 use Doctrine\ORM\EntityRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use RecruitingApp\Api\Exception\ApiException;
 use RecruitingApp\Repository\TypeProductRepository;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteTypeProductService;
+use RecruitingApp\Service\UpdateTypeProductService;
 
 class TypeProductController
 {
     /**
-     * @var CreateTypeProductService $createService
+     * @var CreateTypeProductService
      */
     private $createService;
 
@@ -20,6 +22,11 @@ class TypeProductController
      * @var DeleteTypeProductService
      */
     private $deleteService;
+
+    /**
+     * @var UpdateTypeProductService
+     */
+    private $updateService;
 
     /**
      * @var EntityRepository
@@ -30,15 +37,18 @@ class TypeProductController
      * TypeProductController constructor.
      * @param CreateTypeProductService $createService
      * @param DeleteTypeProductService $deleteService
+     * @param UpdateTypeProductService $updateService
      * @param TypeProductRepository $entityRepository
      */
     public function __construct(
         CreateTypeProductService $createService,
         DeleteTypeProductService $deleteService,
+        UpdateTypeProductService $updateService,
         TypeProductRepository $entityRepository
     ) {
         $this->createService = $createService;
         $this->deleteService = $deleteService;
+        $this->updateService = $updateService;
         $this->repository = $entityRepository;
     }
 
@@ -94,5 +104,33 @@ class TypeProductController
         $response->getBody()->write($content);
 
         return $response;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param $args
+     *
+     * @return ResponseInterface
+     *
+     * @see https://github.com/nikic/FastRoute/issues/65
+     * nesta rota, enviar apenas em content-type: application/json
+     */
+    public function put(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        try {
+
+            $parsedBody = json_decode($request->getBody()->getContents(), true);
+
+            $this->updateService->update($args['id'], $parsedBody);
+
+            return $response->withStatus(204);
+
+        } catch (ApiException $exception) {
+            $response = $response->withStatus(404);
+            $response->getBody()->write($exception->getMessage());
+
+            return $response;
+        }
     }
 }
