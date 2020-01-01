@@ -12,9 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="products")
  * @ORM\HasLifecycleCallbacks
  */
-class Product
+class Product implements \JsonSerializable
 {
-    use DefaultModelTrait;
+    use DefaultModelTrait, DateFormat;
 
     /**
      * @var TypeProduct $productType
@@ -96,5 +96,23 @@ class Product
     public function preUpdate()
     {
         $this->updatedAt= new \DateTime();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'type' => [
+                'id' => $this->productType->getId(),
+                'name' => $this->productType->getName(),
+                'tax_percentage' => $this->productType->getTaxPercentage()
+            ],
+            'created_at' => $this->formatDateView($this->createdAt)
+        ];
     }
 }

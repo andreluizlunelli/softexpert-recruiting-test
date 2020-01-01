@@ -8,8 +8,10 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\Setup;
 use League\Container\Container;
 use League\Route\RouteCollection;
+use League\Route\Strategy\JsonStrategy;
 use RecruitingApp\Api\Controller\ProductController;
 use RecruitingApp\Api\Controller\TypeProductController;
+use RecruitingApp\Model\Product;
 use RecruitingApp\Service\CreateProductService;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteProductService;
@@ -101,22 +103,28 @@ class Bootstrap
 
     private function routes(RouteCollection $route)
     {
-        $route->post('/api/product', ProductController::class.'::post');
-        $route->delete('/api/product/{id}', ProductController::class.'::delete');
-        $route->post('/api/type-product', TypeProductController::class.'::post');
-        $route->delete('/api/type-product/{id}', TypeProductController::class.'::delete');
+        $route->group('/api', function ($route) {
+            $route->get('/product[/{id}]', ProductController::class.'::get');
+            $route->post('/product', ProductController::class.'::post');
+            $route->delete('/product/{id}', ProductController::class.'::delete');
+            $route->post('/type-product', TypeProductController::class.'::post');
+            $route->delete('/type-product/{id}', TypeProductController::class.'::delete');
+        })->setStrategy(new JsonStrategy());
     }
 
     private function dependencyInjection()
     {
-        $this->container->add(CreateProductService::class, new CreateProductService($this->getContainer('em')));
-        $this->container->add(DeleteProductService::class, new DeleteProductService($this->getContainer('em')));
+        $entityManager = $this->getContainer('em');
+
+        $this->container->add(CreateProductService::class, new CreateProductService($entityManager));
+        $this->container->add(DeleteProductService::class, new DeleteProductService($entityManager));
         $this->container->add(ProductController::class, new ProductController(
             $this->getContainer(CreateProductService::class),
-            $this->getContainer(DeleteProductService::class)
+            $this->getContainer(DeleteProductService::class),
+            $entityManager->getRepository(Product::class)
         ));
-        $this->container->add(CreateTypeProductService::class, new CreateTypeProductService($this->getContainer('em')));
-        $this->container->add(DeleteTypeProductService::class, new DeleteTypeProductService($this->getContainer('em')));
+        $this->container->add(CreateTypeProductService::class, new CreateTypeProductService($entityManager));
+        $this->container->add(DeleteTypeProductService::class, new DeleteTypeProductService($entityManager));
         $this->container->add(TypeProductController::class, new TypeProductController(
             $this->getContainer(CreateTypeProductService::class),
             $this->getContainer(DeleteTypeProductService::class)
@@ -124,7 +132,7 @@ class Bootstrap
     }
 
     /**
-     * @return Container
+     * @return Container|mixed
      */
     public function getContainer($alias = null)
     {

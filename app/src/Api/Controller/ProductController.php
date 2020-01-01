@@ -2,6 +2,7 @@
 
 namespace RecruitingApp\Api\Controller;
 
+use Doctrine\ORM\EntityRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RecruitingApp\Service\CreateProductService;
@@ -20,14 +21,24 @@ class ProductController
     private $deleteService;
 
     /**
+     * @var EntityRepository
+     */
+    private $repository;
+
+    /**
      * ProductController constructor.
      * @param CreateProductService $createService
      * @param DeleteProductService $deleteService
+     * @param EntityRepository $entityRepository
      */
-    public function __construct(CreateProductService $createService, DeleteProductService $deleteService)
-    {
+    public function __construct(
+        CreateProductService $createService,
+        DeleteProductService $deleteService,
+        EntityRepository $entityRepository
+    ) {
         $this->createService = $createService;
         $this->deleteService = $deleteService;
+        $this->repository = $entityRepository;
     }
 
     public function post(ServerRequestInterface $request, ResponseInterface $response)
@@ -56,5 +67,22 @@ class ProductController
         $this->deleteService->delete($id);
 
         return $response->withStatus(204);
+    }
+
+    public function get(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        if (array_key_exists('id', $args)) {
+            $product = $this->repository->find($args['id']);
+
+            $content = json_encode($product);
+        } else {
+            $products = $this->repository->findAll();
+
+            $content = json_encode($products);
+        }
+
+        $response->getBody()->write($content);
+
+        return $response;
     }
 }
