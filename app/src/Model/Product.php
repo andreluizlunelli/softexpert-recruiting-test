@@ -40,6 +40,7 @@ class Product implements \JsonSerializable
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     /**
@@ -112,7 +113,8 @@ class Product implements \JsonSerializable
                 'name' => $this->productType->getName(),
                 'tax_percentage' => $this->productType->getTaxPercentage()
             ],
-            'created_at' => $this->formatDateView($this->createdAt)
+            'created_at' => $this->formatDateView($this->createdAt),
+            'updated_at' => $this->formatDateView($this->updatedAt)
         ];
     }
 }

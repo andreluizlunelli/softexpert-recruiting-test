@@ -13,9 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="type_products")
  * @ORM\HasLifecycleCallbacks
  */
-class TypeProduct
+class TypeProduct implements \JsonSerializable
 {
-    use DefaultModelTrait;
+    use DefaultModelTrait, DateFormat;
 
     const TAX_FREE = 'livre de impostos';
 
@@ -43,6 +43,7 @@ class TypeProduct
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         $this->products = new ArrayCollection();
     }
 
@@ -100,5 +101,19 @@ class TypeProduct
     public function preUpdate()
     {
         $this->updatedAt= new \DateTime();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'tax_percentage' => $this->taxPercentage,
+            'created_at' => $this->formatDateView($this->createdAt),
+            'updated_at' => $this->formatDateView($this->updatedAt)
+        ];
     }
 }

@@ -2,8 +2,10 @@
 
 namespace RecruitingApp\Api\Controller;
 
+use Doctrine\ORM\EntityRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use RecruitingApp\Repository\TypeProductRepository;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteTypeProductService;
 
@@ -20,14 +22,24 @@ class TypeProductController
     private $deleteService;
 
     /**
+     * @var EntityRepository
+     */
+    private $repository;
+
+    /**
      * TypeProductController constructor.
      * @param CreateTypeProductService $createService
      * @param DeleteTypeProductService $deleteService
+     * @param TypeProductRepository $entityRepository
      */
-    public function __construct(CreateTypeProductService $createService, DeleteTypeProductService $deleteService)
-    {
+    public function __construct(
+        CreateTypeProductService $createService,
+        DeleteTypeProductService $deleteService,
+        TypeProductRepository $entityRepository
+    ) {
         $this->createService = $createService;
         $this->deleteService = $deleteService;
+        $this->repository = $entityRepository;
     }
 
     public function post(ServerRequestInterface $request, ResponseInterface $response)
@@ -65,5 +77,22 @@ class TypeProductController
 
             return $response;
         }
+    }
+
+    public function get(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $products = array_key_exists('id', $args)
+            ? $this->repository->find($args['id'])
+            : $this->repository->findAll();
+
+        if (empty($products)) {
+            return $response->withStatus(404);
+        }
+
+        $content = json_encode($products);
+
+        $response->getBody()->write($content);
+
+        return $response;
     }
 }

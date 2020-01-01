@@ -12,6 +12,7 @@ use League\Route\Strategy\JsonStrategy;
 use RecruitingApp\Api\Controller\ProductController;
 use RecruitingApp\Api\Controller\TypeProductController;
 use RecruitingApp\Model\Product;
+use RecruitingApp\Model\TypeProduct;
 use RecruitingApp\Service\CreateProductService;
 use RecruitingApp\Service\CreateTypeProductService;
 use RecruitingApp\Service\DeleteProductService;
@@ -107,6 +108,7 @@ class Bootstrap
             $route->get('/product[/{id}]', ProductController::class.'::get');
             $route->post('/product', ProductController::class.'::post');
             $route->delete('/product/{id}', ProductController::class.'::delete');
+            $route->get('/type-product[/{id}]', TypeProductController::class.'::get');
             $route->post('/type-product', TypeProductController::class.'::post');
             $route->delete('/type-product/{id}', TypeProductController::class.'::delete');
         })->setStrategy(new JsonStrategy());
@@ -127,7 +129,8 @@ class Bootstrap
         $this->container->add(DeleteTypeProductService::class, new DeleteTypeProductService($entityManager));
         $this->container->add(TypeProductController::class, new TypeProductController(
             $this->getContainer(CreateTypeProductService::class),
-            $this->getContainer(DeleteTypeProductService::class)
+            $this->getContainer(DeleteTypeProductService::class),
+            $entityManager->getRepository(TypeProduct::class)
         ));
     }
 
