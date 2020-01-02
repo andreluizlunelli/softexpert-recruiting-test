@@ -27,20 +27,39 @@ export class Products {
 class ViewProducts {
 
     thenFetchProductsLoadTable(products) {
-        console.log(products);
 
-        let valuesAutoComplete = {};
+        let tableHeadHtml = '<thead>\n' +
+            '<tr>\n' +
+            '<th>Identificador</th>\n' +
+            '<th>Nome</th>\n' +
+            '<th>Descrição</th>\n' +
+            '<th>Tipo produto</th>\n' +
+            '<th>Imposto produto</th>\n' +
+            '<th>Criado em</th>\n' +
+            '<th>Atualizado em</th>\n' +
+            '</tr>\n' +
+            '</thead>';
+
+        let tableTrHtml = '';
         for (let i in products) {
-            valuesAutoComplete[products[i].name] = null;
+            let product = products[i];
+
+            tableTrHtml += '<tr>\n' +
+                `<td>${product.id}</td>\n` +
+                `<td>${product.name}</td>\n` +
+                `<td>${product.description}</td>\n` +
+                `<td>${product.type.name}</td>\n` +
+                `<td>${product.type.tax_percentage}</td>\n` +
+                `<td>${product.created_at}</td>\n` +
+                `<td>${product.updated_at}</td>\n` +
+                '</tr>'
         }
 
-        let options = {
-            data: valuesAutoComplete
-        };
+        let tableBodyHtml = `<tbody>${tableTrHtml}</tbody>`;
 
-        let elems = document.querySelectorAll('.autocomplete');
+        let table = '<table>' + tableHeadHtml + tableBodyHtml + '</table>';
 
-        this.instances = M.Autocomplete.init(elems, options);
+        $('#table-products').append(table);
     }
 }
 

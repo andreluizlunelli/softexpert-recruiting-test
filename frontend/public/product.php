@@ -11,24 +11,14 @@
             </div>
             <div class="row">
                 <div class="col s12">
-                    <button class="btn green lighten-1 waves-effect waves-light " type="submit" name="action">Efetuar compra</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <div class="row">
-                        <div class="input-field col s4">
-                            <i class="material-icons prefix">shopping_cart</i>
-                            <input type="text" id="autocomplete-input" class="autocomplete">
-                            <label for="autocomplete-input">Mercadoria / código</label>
-                        </div>
-                    </div>
+                    <div id="table-products"><!-- não apagar --></div>
                 </div>
             </div>
         </div>
     </form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="module" src="src/produts/products.js"></script>
 </body>
 </html>
