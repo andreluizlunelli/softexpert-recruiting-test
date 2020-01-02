@@ -24,9 +24,19 @@ services:
     volumes:
       - ./app:/var/www/app
     ports:
-      - "80:8080"
+      - "81:8080"
     environment:
       - XDEBUG_CONFIG="remote_host=localhost remote_port=9000"
       - XDEBUG_ENABLED=true
     links:
       - database
+
+
+  frontend:
+    image: ambientum/php:7.1-nginx
+    volumes:
+      - ./frontend:/var/www/app
+    ports:
+      - "80:8080"
+    links:
+      - app

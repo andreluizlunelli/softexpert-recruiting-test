@@ -9,6 +9,8 @@ use Doctrine\ORM\Tools\Setup;
 use League\Container\Container;
 use League\Route\RouteCollection;
 use League\Route\Strategy\JsonStrategy;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use RecruitingApp\Api\Controller\ProductController;
 use RecruitingApp\Api\Controller\TypeProductController;
 use RecruitingApp\Model\Product;
@@ -106,6 +108,12 @@ class Bootstrap
 
     private function routes(RouteCollection $route)
     {
+        $route->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
+            $response->getBody()->write(require '../public/apresentacao.html');
+
+            return $response;
+        });
+
         $route->group('/api', function ($route) {
             $route->get('/product[/{idOrName}]', ProductController::class.'::get');
             $route->post('/product', ProductController::class.'::post');
