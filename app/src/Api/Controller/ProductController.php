@@ -50,7 +50,11 @@ class ProductController
             $product = $this->createService->create($request->getParsedBody());
 
             $response = $response->withStatus(201);
+            $response = $response->withHeader('Access-Control-Allow-Origin', '*');
             $response = $response->withHeader('location', "/api/product/{$product->getId()}");
+
+            $content = json_encode($product);
+            $response->getBody()->write($content);
 
             return $response;
 

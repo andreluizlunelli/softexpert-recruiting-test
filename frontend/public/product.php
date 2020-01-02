@@ -11,6 +11,39 @@
             </div>
             <div class="row">
                 <div class="col s12">
+                    <div id="form-new-product">
+                        <form class="col s12" style="margin: 18px">
+                            <div class="row">
+                                <div class="col s12">
+                                    <button class="btn green lighten-1 waves-effect waves-light" type="button" id="save-product">Salvar novo produto</button>
+                                    <button class="btn teal darken-1 waves-effect waves-light" type="submit" name="action">Editar produto</button
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input placeholder="Nome produto" id="name-product" type="text" class="validate" name="name">
+                                    <label for="name-product">Nome produto</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="description-product" type="text" class="validate" name="description">
+                                    <label for="description-product">Descrição produto</label>
+                                </div>
+                            </div>
+                            <div class="input-field col s12">
+                                <select id="type-product" name="type">
+                                    <option value="" disabled selected>Escolha uma categoria para o produto</option>
+                                </select>
+                                <label for="type-product">Tipo do produto / Imposto cobrado</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
                     <div id="table-products"><!-- não apagar --></div>
                 </div>
             </div>
@@ -19,6 +52,6 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="module" src="src/produts/products.js"></script>
+<script type="module" src="src/handleProducts.js"></script>
 </body>
 </html>
