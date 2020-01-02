@@ -11,7 +11,7 @@
             </div>
             <div class="row">
                 <div class="col s12">
-                    <button class="btn green lighten-1 waves-effect waves-light " type="submit" name="action">Efetuar compra</button>
+                    <button class="btn green lighten-1 waves-effect waves-light" type="submit" name="action">Efetuar compra</button>
                 </div>
             </div>
             <div class="row">

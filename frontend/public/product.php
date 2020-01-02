@@ -29,31 +29,6 @@
     </form>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('.autocomplete');
-
-        fetch('http://localhost:81/api/product')
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-
-                valuesAutoComplete = {};
-                for (i in data) {
-                    valuesAutoComplete[data[i].name] = null;
-                }
-
-                options = {
-                    data: valuesAutoComplete
-                };
-
-                var instances = M.Autocomplete.init(elems, options);
-            })
-            .catch(err => {
-                console.log(err)
-            });
-    });
-</script>
+<script type="module" src="src/produts/products.js"></script>
 </body>
 </html>
