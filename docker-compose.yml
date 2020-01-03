@@ -23,6 +23,7 @@ services:
     image: ambientum/php:7.1-nginx
     volumes:
       - ./app:/var/www/app
+      - ./nginx-cors-default.conf:/etc/nginx/sites/laravel.conf
     ports:
       - "81:8080"
     environment:
