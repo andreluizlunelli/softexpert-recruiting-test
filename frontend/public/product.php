@@ -16,7 +16,6 @@
                             <div class="row">
                                 <div class="col s12">
                                     <button class="btn green lighten-1 waves-effect waves-light" type="button" id="save-product">Salvar novo produto</button>
-                                    <button class="btn teal darken-1 waves-effect waves-light" type="button" title="Clique em um produto para edição">Editar produto</button>
                                     <button class="btn red darken-1 waves-effect waves-light" type="button" id="delete-product-btn" title="Clique em um produto para excluir">Excluir produto</button>
                                     <br>
                                 </div>
