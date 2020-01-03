@@ -157,12 +157,16 @@ class ViewProducts {
         let description = $(form).find('[name="description"]').val();
         let type = $(form).find('[name="type"]').val();
 
-        return  {
+        let product = {
             id,
             name,
-            description,
-            type
+            description
         };
+
+        if (type === null)
+            product.type = '';
+
+        return product;
     }
 }
 
