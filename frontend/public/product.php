@@ -11,17 +11,19 @@
             </div>
             <div class="row">
                 <div class="col s12">
-                    <div id="form-new-product">
-                        <form class="col s12" style="margin: 18px">
+                    <div>
+                        <form id="form-product" class="col s12" style="margin: 18px">
                             <div class="row">
                                 <div class="col s12">
                                     <button class="btn green lighten-1 waves-effect waves-light" type="button" id="save-product">Salvar novo produto</button>
-                                    <button class="btn teal darken-1 waves-effect waves-light" type="submit" name="action">Editar produto</button
+                                    <button class="btn teal darken-1 waves-effect waves-light" type="button" title="Clique em um produto para edição">Editar produto</button>
+                                    <button class="btn red darken-1 waves-effect waves-light" type="button" id="delete-product-btn" title="Clique em um produto para excluir">Excluir produto</button>
                                     <br>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12">
+                                    <input id="id-product" type="hidden" name="id">
                                     <input placeholder="Nome produto" id="name-product" type="text" class="validate" name="name">
                                     <label for="name-product">Nome produto</label>
                                 </div>
@@ -33,10 +35,10 @@
                                 </div>
                             </div>
                             <div class="input-field col s12">
-                                <select id="type-product" name="type">
+                                <select id="type-product" name="type" class="browser-default">
                                     <option value="" disabled selected>Escolha uma categoria para o produto</option>
                                 </select>
-                                <label for="type-product">Tipo do produto / Imposto cobrado</label>
+<!--                                <label for="type-product">Tipo do produto / Imposto cobrado</label>-->
                             </div>
                         </form>
                     </div>

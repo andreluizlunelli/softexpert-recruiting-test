@@ -30,6 +30,7 @@ export class HandleProducts {
 
         fetch(`${this.backEndUrl}/api/product`, {
             method: 'post',
+            credentials: "omit",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
@@ -45,9 +46,23 @@ export class HandleProducts {
                 console.log(err)
             });
     }
+
+    deleteProduct(product, thenCall) {
+        fetch(`${this.backEndUrl}/api/product/${product.id}`, {
+            method: 'delete',
+            credentials: 'omit'
+        })
+            .then(() => thenCall("Produto excluido com sucesso"))
+            .catch(err => {
+                console.log(err)
+            });
+    }
 }
 
 class ViewProducts {
+    constructor(handleProducts) {
+        this.handleProducts = handleProducts;
+    }
 
     thenFetchProductsLoadTable(products) {
 
@@ -55,6 +70,7 @@ class ViewProducts {
 
         let tableHeadHtml = '<thead>\n' +
             '<tr>\n' +
+            '<th></th>\n' +
             '<th>Identificador</th>\n' +
             '<th>Nome</th>\n' +
             '<th>Descrição</th>\n' +
@@ -69,7 +85,8 @@ class ViewProducts {
         for (let i in products) {
             let product = products[i];
 
-            tableTrHtml += '<tr>\n' +
+            tableTrHtml += `<tr style="cursor: pointer;" data-tr-product='${JSON.stringify(product)}'>\n` +
+                `<td><i class="material-icons tiny">mouse</i></td>\n` +
                 `<td>${product.id}</td>\n` +
                 `<td>${product.name}</td>\n` +
                 `<td>${product.description}</td>\n` +
@@ -85,6 +102,12 @@ class ViewProducts {
         let table = '<table>' + tableHeadHtml + tableBodyHtml + '</table>';
 
         $('#table-products').append(table);
+
+        $( "#table-products tbody tr" ).on( "click", function() {
+            let data = $(this).data('tr-product');
+
+            handleClickProductList(data);
+        });
     }
 
     thenInitPluginSelect(types) {
@@ -102,22 +125,44 @@ class ViewProducts {
     saveNewProduct(event) {
         event.preventDefault();
 
-        let form = $(event.target).closest("form")[0];
+        let product = this.viewProducts.getObjectProductFromForm(event);
 
+        this.viewProducts.handleProducts.saveProduct(product, message => {
+            alert(message);
+            window.location.reload();
+        });
+    }
+
+    deleteProduct(event) {
+        event.preventDefault();
+
+        let product = this.viewProducts.getObjectProductFromForm(event);
+
+        this.viewProducts.handleProducts.deleteProduct(product, message => {
+            alert(message);
+            window.location.reload();
+        });
+    }
+
+    getForm(event) {
+        return $(event.target).closest("form")[0];
+    }
+
+    getObjectProductFromForm(event) {
+
+        let form = this.getForm(event);
+
+        let id = $(form).find('[name="id"]').val();
         let name = $(form).find('[name="name"]').val();
         let description = $(form).find('[name="description"]').val();
         let type = $(form).find('[name="type"]').val();
 
-        let product = {
+        return  {
+            id,
             name,
             description,
             type
         };
-
-        this.handleProducts.saveProduct(product, message => {
-            alert(message);
-            window.location.reload();
-        });
     }
 }
 
@@ -128,11 +173,13 @@ class BootstrapProductsView {
     }
 
     bootstrap() {
-        this.viewProducts = new ViewProducts();
+        this.handleProducts = new HandleProducts(this.backEndUrl);
+        this.viewProducts = new ViewProducts(this.handleProducts);
 
         this.listProducts();
         this.initFormProduct();
         this.actionSubmitNewProduct();
+        this.actionSubmitDeleteProduct();
     }
 
     listProducts() {
@@ -152,9 +199,28 @@ class BootstrapProductsView {
 
         btnSaveNewProduct.addEventListener('click', {
             handleEvent: this.viewProducts.saveNewProduct,
-            handleProducts: this.handleProducts
+            viewProducts: this.viewProducts
         });
     }
+
+    actionSubmitDeleteProduct() {
+        let btn = document.getElementById('delete-product-btn');
+
+        btn.addEventListener('click', {
+            handleEvent: this.viewProducts.deleteProduct,
+            viewProducts: this.viewProducts
+        });
+    }
+}
+
+function handleClickProductList(product) {
+    $('form [name="id"]').val(product.id);
+    $('form [name="name"]').val(product.name);
+    $('form [name="name"]').focus();
+    $('form [name="description"]').val(product.description);
+    $('form [name="description"]').focus();
+    $('form [name="type"]').val(product.type.id);
+    $('form [name="type"] option:selected').attr("selected");
 }
 
 document.addEventListener('DOMContentLoaded', function() {
