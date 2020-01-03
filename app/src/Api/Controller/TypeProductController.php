@@ -110,8 +110,6 @@ class TypeProductController
 
         $content = json_encode($products);
 
-        $response = $response->withHeader('Access-Control-Allow-Origin', '*');
-
         $response->getBody()->write($content);
 
         return $response;

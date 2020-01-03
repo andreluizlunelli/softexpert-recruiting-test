@@ -50,7 +50,6 @@ class ProductController
             $product = $this->createService->create($request->getParsedBody());
 
             $response = $response->withStatus(201);
-            $response = $response->withHeader('Access-Control-Allow-Origin', '*');
             $response = $response->withHeader('location', "/api/product/{$product->getId()}");
 
             $content = json_encode($product);
@@ -77,6 +76,7 @@ class ProductController
 
     public function get(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
+
         try {
             if (array_key_exists('idOrName', $args)) {
 
@@ -95,7 +95,6 @@ class ProductController
             }
 
             $content = json_encode($product);
-            $response = $response->withHeader('Access-Control-Allow-Origin', '*');
             $response->getBody()->write($content);
 
             return $response;
