@@ -25,6 +25,7 @@ export class HandleProducts {
         formData.append('type', product.type);
         formData.append('name', product.name);
         formData.append('description', product.description);
+        formData.append('price', product.price);
 
         let data = new URLSearchParams(formData);
 
@@ -73,6 +74,7 @@ class ViewProducts {
             '<th></th>\n' +
             '<th>Identificador</th>\n' +
             '<th>Nome</th>\n' +
+            '<th>Preço</th>\n' +
             '<th>Descrição</th>\n' +
             '<th>Tipo produto</th>\n' +
             '<th>Imposto produto</th>\n' +
@@ -89,6 +91,7 @@ class ViewProducts {
                 `<td><i class="material-icons tiny">mouse</i></td>\n` +
                 `<td>${product.id}</td>\n` +
                 `<td>${product.name}</td>\n` +
+                `<td>${product.price}</td>\n` +
                 `<td>${product.description}</td>\n` +
                 `<td>${product.type.name}</td>\n` +
                 `<td>${product.type.tax_percentage}</td>\n` +
@@ -154,17 +157,20 @@ class ViewProducts {
 
         let id = $(form).find('[name="id"]').val();
         let name = $(form).find('[name="name"]').val();
+        let price = $(form).find('[name="price"]').val();
         let description = $(form).find('[name="description"]').val();
         let type = $(form).find('[name="type"]').val();
 
         let product = {
             id,
             name,
+            price,
             description
         };
 
-        if (type === null)
-            product.type = '';
+        product.type = (type === null)
+            ? ''
+            : type;
 
         return product;
     }
@@ -219,6 +225,8 @@ function handleClickProductList(product) {
     $('form [name="id"]').val(product.id);
     $('form [name="name"]').val(product.name);
     $('form [name="name"]').focus();
+    $('form [name="price"]').val(product.price);
+    $('form [name="price"]').focus();
     $('form [name="description"]').val(product.description);
     $('form [name="description"]').focus();
     $('form [name="type"]').val(product.type.id);

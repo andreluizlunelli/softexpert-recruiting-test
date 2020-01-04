@@ -21,10 +21,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s12">
+                                <div class="input-field col s6">
                                     <input id="id-product" type="hidden" name="id">
                                     <input placeholder="Nome produto" id="name-product" type="text" class="validate" name="name">
                                     <label for="name-product">Nome produto</label>
+                                </div>
+                                <div class="input-field col s6">
+                                    <input placeholder="Preço do produto" id="price-product" type="text" class="validate" name="price">
+                                    <label for="price-product">Preço do produto</label>
                                 </div>
                             </div>
                             <div class="row">
