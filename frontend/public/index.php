@@ -20,9 +20,19 @@
                         <div class="input-field col s4">
                             <i class="material-icons prefix">shopping_cart</i>
                             <input type="text" id="autocomplete-input" class="autocomplete">
-                            <label for="autocomplete-input">Mercadoria / código</label>
+                            <label for="autocomplete-input">Inserir nome mercadoria</label>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <h4 class="light-blue-text text-darken-1">Carrinho de compras</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <div id="table-products-cart"><!-- não apagar --></div>
                 </div>
             </div>
         </div>
@@ -30,31 +40,11 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('.autocomplete');
+<script type="module" src="src/handleSales.js"></script>
+<script type="module">
+    import BootstrapSalesView from './src/handleSales.js';
 
-        fetch('http://localhost:81/api/product')
-            .then(response => {
-                return response.json()
-            })
-            .then(data => {
-
-                valuesAutoComplete = {};
-                for (i in data) {
-                    valuesAutoComplete[data[i].name] = null;
-                }
-
-                options = {
-                    data: valuesAutoComplete
-                };
-
-                var instances = M.Autocomplete.init(elems, options);
-            })
-            .catch(err => {
-                console.log(err)
-            });
-    });
+    document.addEventListener('DOMContentLoaded', () => new BootstrapSalesView('http://localhost:81').bootstrap());
 </script>
 </body>
 </html>

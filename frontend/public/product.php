@@ -37,7 +37,6 @@
                                 <select id="type-product" name="type" class="browser-default">
                                     <option value="" disabled selected>Escolha uma categoria para o produto</option>
                                 </select>
-<!--                                <label for="type-product">Tipo do produto / Imposto cobrado</label>-->
                             </div>
                         </form>
                     </div>
