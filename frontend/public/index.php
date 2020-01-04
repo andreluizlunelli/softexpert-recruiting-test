@@ -43,9 +43,8 @@
                     <div class="collection" id="collection-totals" style="display: none">
                         <p class="collection-item"><span id="span-total-paid" class="badge">R$ 34,50</span>Total compra</p>
                         <p class="collection-item"><span id="span-tax-paid" class="badge yellow">R$ 30,99</span>Total impostos</p>
-                        <p class="collection-item" id="span-itens-header">Itens</p>
+                        <p class="collection-item" id="span-itens-header"><span id="span-qtd-itens" class="badge"></span>Itens</p>
                         <p class="collection-item total-item-paid"><span class="badge">R$ 4,50</span><span class="badge yellow">R$ 2,30</span>&nbsp;&nbsp;Cerveja</p>
-                        <p class="collection-item total-item-paid"><span class="badge">R$ 3,20</span><span class="badge yellow">R$ 1,16</span>&nbsp;&nbsp;Refri</p>
                     </div>
                 </div>
             </div>

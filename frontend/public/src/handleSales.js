@@ -49,8 +49,8 @@ class ProductCart {
                 `<span class="badge">${product.amount}</span>` +
                 `</td>\n` +
                 `<td style="text-align: right;">\n` +
-                `<span class="new badge blue add-amount-product" style="cursor: pointer; padding-top: 3px;" data-badge-caption=""><i class="material-icons tiny">exposure_plus_1</i></span>` +
-                `<span class="new badge red remove-amount-product" style="cursor: pointer; padding-top: 3px;" data-badge-caption=""><i class="material-icons tiny">exposure_neg_1</i></span>` +
+                `<span class="add-amount-product" style="cursor: pointer; padding-top: 3px;" data-badge-caption=""><i class="material-icons tiny blue-text text-darken-2">add</i></span>` +
+                `<span class="remove-amount-product" style="cursor: pointer; padding-top: 3px;" data-badge-caption=""><i class="material-icons tiny blue-text text-darken-2">remove</i></span>` +
                 `</td>\n` +
                 '</tr>'
         }
@@ -165,11 +165,55 @@ export default class BootstrapSalesView {
     buy() {
         let productsAmount = cart.getProductsWithAmount(cart.productsOnCart);
 
+        let totalPaid = 0;
+        let totalPaidTax = 0;
+
+        let showProducts = [];
+
         for (let i in productsAmount) {
             let product = productsAmount[i];
 
-            product.amount * product.
+            let priceWithTax = (product.type.tax_percentage === 0)
+                ? product.price
+                : product.price * product.type.tax_percentage;
+
+            let totalPaidItem = product.amount * priceWithTax;
+
+            totalPaid += totalPaidItem;
+
+            let onlyTaxPrice = priceWithTax - product.price;
+
+            let totalPaidItemTax = product.amount * onlyTaxPrice;
+
+            totalPaidTax += totalPaidItemTax;
+
+            showProducts.push({
+                'id': product.id,
+                'name': product.name,
+                'item': priceWithTax,
+                'totalItem': totalPaidItem,
+                'totalItemTax': totalPaidItemTax
+            });
         }
+
+        $('#header-div-tax-coupon').show();
+        $('#span-total-paid').text(`R$ ${totalPaid}`);
+        $('#span-tax-paid').text(`R$ ${totalPaidTax}`);
+        $('#span-qtd-itens').text(showProducts.length);
+        $('.total-item-paid').remove();
+
+        for (let i in showProducts) {
+            let product = showProducts[i];
+
+            let elementHtml = `<p class="collection-item total-item-paid">\n` +
+                `<span class="badge">R$ ${product.totalItem}</span>\n` +
+                `<span class="badge yellow">R$ ${product.totalItemTax}</span>\n` +
+                `<span class="badge green-text text-darken-1">R$ ${product.item}</span>\n` +
+                `&nbsp;&nbsp;${product.name}</p>`;
+
+            $('#span-itens-header').after(elementHtml);
+        }
+        $('#collection-totals').show();
     }
 }
 

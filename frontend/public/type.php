@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="input-field col s12">
                                     <input id="tax_percentage-type" type="text" class="validate" name="tax_percentage">
-                                    <label for="tax_percentage-type">Imposto produto</label>
+                                    <label for="tax_percentage-type">Percentual imposto</label>
                                 </div>
                             </div>
                         </form>
