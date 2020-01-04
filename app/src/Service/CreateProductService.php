@@ -42,9 +42,14 @@ class CreateProductService
             throw new ApiException('Necessário informar o campo: description');
         }
 
+        if (! array_key_exists('price', $params)) {
+            throw new ApiException('Necessário informar o campo: price');
+        }
+
         $product = new Product();
         $product->setName($params['name']);
         $product->setDescription($params['description']);
+        $product->setPrice($params['price']);
         $product->setProductType($typeProduct);
 
         $this->entityManager->persist($product);
