@@ -30,15 +30,56 @@ export class HandleTypes {
             },
             body: data
         })
+            .then(() => thenCall("Tipo de produto salvo com sucesso"))
+            .catch(err => {
+                console.log(err)
+            });
+    }
+
+    deleteType(type, thenCall) {
+        fetch(`${this.backEndUrl}/api/type-product/${type.id}`, {
+            method: 'delete',
+            credentials: 'omit'
+        })
+            .then((response) => response.text())
             .then(data => {
 
-                thenCall("Tipo de produto salvo com sucesso");
+                if (data.length > 0) {
+                    let parseResponse = JSON.parse(data);
+                    thenCall(parseResponse.message);
+                    return;
+                }
 
+                thenCall("Tipo de produto excluido com sucesso");
             })
             .catch(err => {
                 console.log(err)
             });
+    }
 
+    updateType(type, thenCall) {
+        fetch(`${this.backEndUrl}/api/type-product/${type.id}`, {
+            method: 'put',
+            credentials: 'omit',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(type)
+        })
+            .then((response) => response.text())
+            .then(data => {
+
+                if (data.length > 0) {
+                    let parseResponse = JSON.parse(data);
+                    thenCall(parseResponse.message);
+                    return;
+                }
+
+                thenCall("Tipo de produto alterado com sucesso");
+            })
+            .catch(err => {
+                console.log(err)
+            });
     }
 }
 
@@ -120,6 +161,28 @@ class ViewTypes {
         };
     }
 
+    deleteType(event) {
+        event.preventDefault();
+
+        let type = this.viewTypes.getObjectTypeFromForm(event);
+
+        this.viewTypes.handleTypes.deleteType(type, message => {
+            alert(message);
+            window.location.reload();
+        });
+    }
+
+    updateType(event) {
+        event.preventDefault();
+
+        let type = this.viewTypes.getObjectTypeFromForm(event);
+
+        this.viewTypes.handleTypes.updateType(type, message => {
+            alert(message);
+            window.location.reload();
+        });
+    }
+
 }
 
 class BootstrapTypesView {
@@ -134,6 +197,8 @@ class BootstrapTypesView {
 
         this.listTypes();
         this.actionSubmitNewType();
+        this.actionSubmitDeleteType();
+        this.actionSubmitUpdateType();
     }
 
     listTypes() {
@@ -145,6 +210,24 @@ class BootstrapTypesView {
 
         btnSaveNewType.addEventListener('click', {
             handleEvent: this.viewTypes.saveNewType,
+            viewTypes: this.viewTypes
+        });
+    }
+
+    actionSubmitDeleteType() {
+        let btn = document.getElementById('delete-type-btn');
+
+        btn.addEventListener('click', {
+            handleEvent: this.viewTypes.deleteType,
+            viewTypes: this.viewTypes
+        });
+    }
+
+    actionSubmitUpdateType() {
+        let btn = document.getElementById('update-type-btn');
+
+        btn.addEventListener('click', {
+            handleEvent: this.viewTypes.updateType,
             viewTypes: this.viewTypes
         });
     }

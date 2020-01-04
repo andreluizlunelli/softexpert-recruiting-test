@@ -16,6 +16,7 @@
                             <div class="row">
                                 <div class="col s12">
                                     <button class="btn green lighten-1 waves-effect waves-light" type="button" id="save-type-btn">Salvar novo tipo de produto</button>
+                                    <button class="btn teal lighten-1 waves-effect waves-light" type="button" id="update-type-btn">Atualizar tipo de produto</button>
                                     <button class="btn red darken-1 waves-effect waves-light" type="button" id="delete-type-btn" title="Clique em um tipo para excluir">Excluir tipo de produto</button>
                                     <br>
                                 </div>
