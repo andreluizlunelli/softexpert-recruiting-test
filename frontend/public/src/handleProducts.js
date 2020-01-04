@@ -1,4 +1,4 @@
-import {Types} from './types.js';
+import {HandleTypes} from './handleTypes.js';
 
 export class HandleProducts {
 
@@ -187,13 +187,11 @@ class BootstrapProductsView {
     }
 
     listProducts() {
-        this.handleProducts = new HandleProducts(this.backEndUrl);
-
         this.handleProducts.fetchProducts(this.viewProducts.thenFetchProductsLoadTable);
     }
 
     initFormProduct() {
-        let types = new Types(this.backEndUrl);
+        let types = new HandleTypes(this.backEndUrl);
 
         types.fetchTypes(this.viewProducts.thenInitPluginSelect);
     }
