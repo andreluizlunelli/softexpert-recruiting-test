@@ -16,7 +16,7 @@
                             <div class="row">
                                 <div class="col s12">
                                     <button class="btn green lighten-1 waves-effect waves-light" type="button" id="save-type-btn">Salvar novo tipo de produto</button>
-                                    <button class="btn teal lighten-1 waves-effect waves-light" type="button" id="update-type-btn">Atualizar tipo de produto</button>
+                                    <button class="btn teal lighten-1 waves-effect waves-light" type="button" id="update-type-btn" title="Clique em um tipo para atualizar">Atualizar tipo de produto</button>
                                     <button class="btn red darken-1 waves-effect waves-light" type="button" id="delete-type-btn" title="Clique em um tipo para excluir">Excluir tipo de produto</button>
                                     <br>
                                 </div>
@@ -49,5 +49,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="module" src="src/handleTypes.js"></script>
+<script type="module">
+    import BootstrapTypesView from './src/handleTypes.js';
+
+    document.addEventListener('DOMContentLoaded', () => new BootstrapTypesView('http://localhost:81').bootstrap());
+</script>
 </body>
 </html>

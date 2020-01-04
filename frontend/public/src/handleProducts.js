@@ -170,7 +170,7 @@ class ViewProducts {
     }
 }
 
-class BootstrapProductsView {
+export default class BootstrapProductsView {
 
     constructor(backEndUrl) {
         this.backEndUrl = backEndUrl;
@@ -224,8 +224,3 @@ function handleClickProductList(product) {
     $('form [name="type"]').val(product.type.id);
     $('form [name="type"] option:selected').attr("selected");
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    new BootstrapProductsView('http://localhost:81').bootstrap();
-});
-

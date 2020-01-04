@@ -54,5 +54,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="module" src="src/handleProducts.js"></script>
+<script type="module">
+    import BootstrapProductsView from './src/handleProducts.js';
+
+    document.addEventListener('DOMContentLoaded', () => new BootstrapProductsView('http://localhost:81').bootstrap());
+</script>
 </body>
 </html>

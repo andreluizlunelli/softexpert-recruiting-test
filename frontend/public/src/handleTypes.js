@@ -185,7 +185,7 @@ class ViewTypes {
 
 }
 
-class BootstrapTypesView {
+export default class BootstrapTypesView {
 
     constructor(backEndUrl) {
         this.backEndUrl = backEndUrl;
@@ -240,7 +240,3 @@ function handleClickTypeList(type) {
     $('form [name="tax_percentage"]').val(type.tax_percentage);
     $('form [name="tax_percentage"]').focus();
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    new BootstrapTypesView('http://localhost:81').bootstrap();
-});
