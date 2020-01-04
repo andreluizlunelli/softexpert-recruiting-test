@@ -1,38 +1,5 @@
 import {HandleProducts} from "./handleProducts.js";
 
-class ViewSales {
-
-    constructor(handleProducts) {
-        this.handleProducts = handleProducts;
-    }
-
-    thenSetValuesToAutocompleteInput(products) {
-        let valuesAutoComplete = {};
-
-        allProductsList = products;
-
-        for (let i in products) {
-            valuesAutoComplete[products[i].name] = null;
-        }
-
-        const options = {
-            data: valuesAutoComplete
-        };
-
-        let elems = document.querySelectorAll('.autocomplete');
-
-        M.Autocomplete.init(elems, options);
-
-        $('.autocomplete').on('change', function () {
-            let productName = $(this).val();
-
-            cart.insertProductOnCartByName(productName);
-
-            $(this).val('');
-        });
-    }
-}
-
 class ProductCart {
 
     constructor(allProductsList) {
@@ -136,7 +103,6 @@ class ProductCart {
     }
 
     removeProductOnCart(product) {
-
         let indexOf = this.productsOnCart.indexOf(product);
 
         this.productsOnCart.splice(indexOf, 1);
@@ -150,17 +116,64 @@ export default class BootstrapSalesView {
     constructor(backEndUrl) {
         this.backEndUrl = backEndUrl;
         this.handleProducts = new HandleProducts(backEndUrl);
-        this.viewSales = new ViewSales(this.handleProducts);
     }
 
     bootstrap() {
         this.initInputListProducts();
+        this.actionBuy();
     }
 
     initInputListProducts() {
-        this.handleProducts.fetchProducts(this.viewSales.thenSetValuesToAutocompleteInput);
+        this.handleProducts.fetchProducts(this.thenSetValuesToAutocompleteInput);
+    }
+
+    thenSetValuesToAutocompleteInput(products) {
+        let valuesAutoComplete = {};
+
+        allProductsList = products;
+
+        for (let i in products) {
+            valuesAutoComplete[products[i].name] = null;
+        }
+
+        const options = {
+            data: valuesAutoComplete
+        };
+
+        let elems = document.querySelectorAll('.autocomplete');
+
+        M.Autocomplete.init(elems, options);
+
+        $('.autocomplete').on('change', function () {
+            let productName = $(this).val();
+
+            cart.insertProductOnCartByName(productName);
+
+            $(this).val('');
+        });
+    }
+
+    actionBuy() {
+        let btn = document.getElementById('buy-btn');
+
+        btn.addEventListener('click', {
+            handleEvent: this.buy,
+            that: this
+        });
+    }
+
+    buy() {
+        let productsAmount = cart.getProductsWithAmount(cart.productsOnCart);
+
+        for (let i in productsAmount) {
+            let product = productsAmount[i];
+
+            product.amount * product.
+        }
     }
 }
+
+
 
 export var allProductsList = [];
 export var cart = new ProductCart(allProductsList);
