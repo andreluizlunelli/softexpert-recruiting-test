@@ -37,6 +37,13 @@ class Product implements \JsonSerializable
      */
     private $description;
 
+    /**
+     * @var float $price
+     *
+     * @ORM\Column(type="float")
+     */
+    private $price;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -92,6 +99,22 @@ class Product implements \JsonSerializable
     }
 
     /**
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param float $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
      * @ORM\PreUpdate()
      */
     public function preUpdate()
@@ -108,6 +131,7 @@ class Product implements \JsonSerializable
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
+            'price' => $this->price,
             'type' => [
                 'id' => $this->productType->getId(),
                 'name' => $this->productType->getName(),
