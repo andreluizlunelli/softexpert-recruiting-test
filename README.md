@@ -41,8 +41,7 @@ persistidos na base.
 
 O projeto `/front-end` representa as telas do sistema onde é dividido em páginas html e lógica de apresentação e
 manipulação de dados com ES6 dentro de ``/front-end/public/src``.
- 
-O PHP só foi utilizado para fazer include de html's repetitivos, mas poderia ser utilizado qualquer outra
+O PHP no projeto `/front-end` só foi utilizado para fazer include de html's repetitivos, mas poderia ser utilizado qualquer outra
 implementação: Angular, Reack ou Vue.js
 
 Detalhes de configuração do banco de dados: ``/app/config/.env``
