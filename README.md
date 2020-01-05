@@ -45,5 +45,7 @@ manipulação de dados com ES6 dentro de ``/front-end/public/src``.
 O PHP só foi utilizado para fazer include de html's repetitivos, mas poderia ser utilizado qualquer outra
 implementação: Angular, Reack ou Vue.js
 
+Detalhes de configuração do banco de dados: ``/app/config/.env``
+
 ####Coleção de requisições no Postman
 [requisições](https://www.getpostman.com/collections/463ec97b796f015db9d2) (https://www.getpostman.com/collections/463ec97b796f015db9d2)
