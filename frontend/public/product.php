@@ -60,7 +60,7 @@
 <script type="module">
     import BootstrapProductsView from './src/handleProducts.js';
 
-    document.addEventListener('DOMContentLoaded', () => new BootstrapProductsView('http://localhost:81').bootstrap());
+    document.addEventListener('DOMContentLoaded', () => new BootstrapProductsView(window.location.origin + ':81').bootstrap());
 </script>
 </body>
 </html>

@@ -52,7 +52,7 @@
 <script type="module">
     import BootstrapTypesView from './src/handleTypes.js';
 
-    document.addEventListener('DOMContentLoaded', () => new BootstrapTypesView('http://localhost:81').bootstrap());
+    document.addEventListener('DOMContentLoaded', () => new BootstrapTypesView(window.location.origin + ':81').bootstrap());
 </script>
 </body>
 </html>

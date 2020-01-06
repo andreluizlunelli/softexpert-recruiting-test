@@ -57,7 +57,7 @@
 <script type="module">
     import BootstrapSalesView from './src/handleSales.js';
 
-    document.addEventListener('DOMContentLoaded', () => new BootstrapSalesView('http://localhost:81').bootstrap());
+    document.addEventListener('DOMContentLoaded', () => new BootstrapSalesView(window.location.origin + ':81').bootstrap());
 </script>
 </body>
 </html>
